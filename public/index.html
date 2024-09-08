@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribing our email</title>   
+    <link rel="stylesheet" href="css/mystyle.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="images/email-marketing.png" alt="Newsletter">
+            <div class="container-right">
+                
+            </div>
+        </div>
+        <form action="/" method="post" id="subscribe">
+
+            <label for="firstname">First Name</label>
+            <input type="text" id="firstname" name="firstname" placeholder="First Name">
+
+            <label for="lastname">Last Name</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Last Name">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Email">
+
+            <div class="button-container">
+                <input type="submit" value="SUBSCRIBE">
+            </div>
+
+            <div id="result" class="result"></div>
+        
+        </form>
+
+        <script>
+            document.getElementById('subscribe').addEventListener('submit', function(event){
+                event.preventDefault();
+
+            var firstname = document.getElementById('firstname').value;
+            var lastname = document.getElementById('lastname').value;
+            var email  = document.getElementById('email').value;
+
+            if (firstname && lastname && email) {
+                fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ firstname, lastname, email})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerHTML = `<h2>Your subscription is successfull.<br> Thank you, ${data.firstname} ${data.lastname}</h2>`;
+                    document.getElementById('subscribe').reset();
+                })
+                .catch(error => console.error('Error:', error));
+                //document.getElementById('result').innerHTML = "Something went wrong. Please try again later."
+            } else {
+                document.getElementById('result').innerHTML = `<h2>Please enter name and email.</h2>`;
+            }
+        });
+        </script>
+    </div>
+</body>
+</html>
